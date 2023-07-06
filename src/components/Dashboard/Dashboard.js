@@ -5,7 +5,8 @@ const Dashboard = () => {
     <>
       <h1>Dashboard page</h1>
       <p>
-        <Link to="/items">Items page</Link>        
+        <Link to="/items">Items page</Link>  
+        <Link to="additems">Add items</Link>
       </p>
     </>
   );
