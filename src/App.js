@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 
 
 
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/items', element: <Item/> },
       { path: '/', element: <Header /> },
-      { path: '/dashboard', element: <Dashboard/> },
+      { path: '/dashboard', element: <Dashboard /> },
     ],
   } 
 ]);
