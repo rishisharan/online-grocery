@@ -1,13 +1,22 @@
 import { Link } from "react-router-dom";
+import classes from "./Dashboard.module.css";
 
 const Dashboard = () => {
   return (
     <>
       <h1>Dashboard page</h1>
-      <p>
-        <Link to="/items">Items page</Link>  
-        <Link to="additems">Add items</Link>
-      </p>
+      <Link to="/itemPage" className={classes["tile-content"]}>
+        <div className={classes["tile-container"]}>Items</div>
+      </Link>
+      <Link to="/itemPage" className={classes["tile-content"]}>
+        <div className={classes["tile-container"]}>Orders</div>
+      </Link>
+      <Link to="/itemPage" className={classes["tile-content"]}>
+        <div className={classes["tile-container"]}>Employees</div>
+      </Link>
+      <Link to="/itemPage" className={classes["tile-content"]}>
+        <div className={classes["tile-container"]}>Customers</div>
+      </Link>
     </>
   );
 };

@@ -1,0 +1,33 @@
+/* Tile container styles */
+.tile-container {
+    display: inline-block;
+    width: 200px; /* Adjust the width as per your requirement */
+    height: 150px; /* Adjust the height as per your requirement */
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f0f0f0; /* Adjust the background color as needed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adjust the shadow as needed */
+    margin: 10px; /* Adjust the margin as needed */
+    transition: transform 0.2s ease; /* Add a smooth transition on hover */
+    display: flex; 
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+  }
+  
+  /* Tile content styles */
+  .tile-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #333; /* Adjust the text color as needed */
+    text-decoration: none;
+  }
+  
+  /* Tile hover effect */
+  .tile-container:hover {
+    transform: scale(1.05); /* Adjust the scaling factor as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the shadow on hover */
+  }
