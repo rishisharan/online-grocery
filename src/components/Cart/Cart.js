@@ -14,7 +14,7 @@ const Cart = (props) => {
   const [isError, setIsError] = useState(false);
 
   const cartItemAddHandler = (item) => {
-    cartCtx.addItem({ ...item, amount: 1 });
+    cartCtx.addItem({ ...item, quantity: 1 });
   };
   const cartItemRemoveHandler = (id) => {
     cartCtx.removeItem(id);
@@ -49,8 +49,8 @@ const Cart = (props) => {
       {cartCtx.items.map((item, index) => (
         <CartItem
           key={item.id}
-          name={item.name}
-          amount={item.amount}
+          title={item.title}
+          quantity={item.quantity}
           price={item.price}
           onRemove={cartItemRemoveHandler.bind(null, item.id)}
           onAdd={cartItemAddHandler.bind(null, item)}

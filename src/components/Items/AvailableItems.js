@@ -21,7 +21,7 @@ const AvailableItems = () => {
     for (const key in data) { 
       loadedItems.push({
         id: key,
-        name: data[key].name,
+        title: data[key].name,
         description: data[key].description,
         price: data[key].price 
       })
@@ -53,7 +53,7 @@ const AvailableItems = () => {
     <ItemDetails
       id={item.id}
       key={item.id}
-      name={item.name}
+      title={item.title}
       description={item.description}
       price={item.price}
     />

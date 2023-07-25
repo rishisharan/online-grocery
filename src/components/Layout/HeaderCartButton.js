@@ -7,7 +7,7 @@ const HeaderCartButton = props => {
     const cartCtx = useContext(CartContext);
     const { items } = cartCtx;
     const numberOfCartItems = items.reduce((curtNumber, item) => {
-        return curtNumber + item.amount;
+        return curtNumber + item.quantity;
     }, 0);
     const btnClasses = `${classes.button} ${btnIsHighlighted ? classes.bump : ''}`;
     

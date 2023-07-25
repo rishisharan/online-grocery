@@ -5,17 +5,18 @@ import ItemForm from './ItemForm';
 const ItemDetails = (props) => { 
     const cartCtx =  useContext(CartContext);
     const price = `$${props.price.toFixed(2)}`;
-    const onAddToCartHandler = amount => { 
+    const onAddToCartHandler = quantity => { 
         cartCtx.addItem({
             id: props.id,
-            name: props.name,
-            amount: amount,
+            title: props.title,
+            description: props.description,
+            quantity: quantity,
             price: props.price
         });
     };
     return (<li className={classes.item}>
         <div>
-            <h3>{props.name}</h3>
+            <h3>{props.title}</h3>
             <div><h3 className={classes.description}>{props.description}</h3></div>
             <div><h3 className={classes.price}>{price}</h3></div>
         </div>
