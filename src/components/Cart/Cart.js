@@ -11,6 +11,8 @@ const Cart = (props) => {
   const [isCheckout, setIsCheckout] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+
   const cartItemAddHandler = (item) => {
     cartCtx.addItem({ ...item, amount: 1 });
   };
@@ -21,15 +23,22 @@ const Cart = (props) => {
   const submitOrderHandler = async (userData) => {
     setIsSubmitting(true);
     const response = await fetch(
-      "https://online-grocery-c68cf-default-rtdb.firebaseio.com/orders.json",
+      "http://localhost:8080/api/v1/orders",
       {
         method: "POST",
+        headers: {
+          'Content-Type': 'application/json', 
+        },
         body: JSON.stringify({
-          user: userData,
-          orderedItems: cartCtx.items,
+          customer: userData,
+          items: cartCtx.items,
+          total: cartCtx.totalAmount,
+          orderStatus: 'PENDING',
         }),
       }
-    );
+    ).catch((error) => {
+      setIsError(true);
+    });
     cartCtx.clearCart();
     setIsSubmitSuccess(true);
     setIsSubmitting(false);
@@ -81,21 +90,29 @@ const Cart = (props) => {
     </Fragment>
   );
 
-  const isSubmittingModalContent = <p>Sending order data..</p>;
-
-  const submitSuccesful = (<Fragment><p>Order Successfully Submitted!</p>
-  <div className={classes.actions}>
+  const errorPlacingOrder = (<Fragment><p>We're sorry, but there was a problem with your order submission.</p>
+    <div className={classes.actions}>
       <button className={classes.button} onClick={props.onClose}>
         Close
-      </button>
-      
+      </button>    
+    </div>
+  </Fragment >);
+
+ const isSubmittingModalContent = <p>Sending order data..</p>;
+
+  const submitSuccesful = (<Fragment><p>Order Successfully Submitted!</p>   
+    <div className={classes.actions}>
+        <button className={classes.button} onClick={props.onClose}>
+          Close
+        </button>    
     </div>
   </Fragment>);
 
   return <Modal onClose={props.onClose}>
     {!isSubmitting && !isSubmitSuccess && cartModalContent}
     {isSubmitting && isSubmittingModalContent}
-    {!isSubmitting && isSubmitSuccess && submitSuccesful}
+    {!isSubmitting && isSubmitSuccess && !isError && submitSuccesful}
+    {isError && errorPlacingOrder}
   </Modal>;
 };
 export default Cart;

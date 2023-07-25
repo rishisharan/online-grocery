@@ -31,8 +31,8 @@ const Checkout = props => {
 
         //Submit the data
         props.onConfirm({
-            name: enteredName,
-            phone: enteredPhone
+            customerName: enteredName,
+            phoneNumber: enteredPhone
         });
     };
 
