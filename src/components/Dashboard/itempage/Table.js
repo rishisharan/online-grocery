@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import classes from './Table.module.css';
 import { useState, useEffect } from "react";
 import ReadTable from './ReadTable';
 const isEmpty = value => value.trim() === '';
@@ -19,9 +20,18 @@ const Table = () => {
   const descriptionInputRef = useRef();
   const priceInputRef = useRef();
 
+  const [itemId, setItemId] = useState();
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
+  const [price, setPrice] = useState();
+  
+
   const handleEditPostForm = (e, item) => {
     e.preventDefault()
-    
+    setItemId(item.itemId);
+    setTitle(item.title);
+    setDescription(item.description);
+    setPrice(item.price);
   }
 
   const handleAddPost = (e) => {
@@ -55,14 +65,18 @@ const Table = () => {
   };
 
   const submitOrderHandler = async (itemData) => {
-    await fetch('https://online-grocery-c68cf-default-rtdb.firebaseio.com/items.json', {
+    await fetch('http://localhost:8080/api/v1/items', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
-        item: {
           title: itemData.title,
           description: itemData.description,
-          price: itemData.price
-        }
+          quantity: 1,
+          price: itemData.price,
+          isTaxable: true,
+          isAvailable: false,
       })
     });
   //  setIsSubmitting(false);
@@ -72,7 +86,7 @@ const Table = () => {
   async function fetchItemsHandler() {
     setIsLoading(true);
     const response = await fetch(
-      "https://online-grocery-c68cf-default-rtdb.firebaseio.com/items.json"
+      "http://localhost:8080/api/v1/items"
     );
     if (!response.ok) {
       throw new Error("Something went wrong");
@@ -80,18 +94,7 @@ const Table = () => {
 
     const data = await response.json();
     const loadedItems = [];
-    for (const key in data) {
-      console.log('Key ', key, 'Data ', data);
-      loadedItems.push({
-        id: key,
-        title: data[key].item.title,
-        description: data[key].item.description,
-        price: data[key].item.price,
-      });
-      console.log('Loaded items ',loadedItems);
-      setItems(loadedItems);
-      setIsLoading(false);
-    }
+    setItems(data);
   }
 
   useEffect(() => {
@@ -116,10 +119,10 @@ const Table = () => {
       <table className="table table-bordered border-primary table-responsible">
         <thead>
           <tr>
-            <th scope="col">id</th>
-            <th scope="col">title</th>
-            <th scope="col">description</th>
-            <th scope="col">price</th>
+            <th scope="col">Id</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
           </tr>
         </thead>
         <tbody>
@@ -141,20 +144,20 @@ const Table = () => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Add New Post</h5>
+              <h5 className="modal-title" id="exampleModalLabel">Add New Item</h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <form onSubmit={handleAddPost}>
                 <div className="mb-3">
-                  <label className="form-label">User ID</label>
+                  <label className="form-label">Item ID</label>
                   <input
                     type="text"
                     className="form-control"
-                    name="userId"
-                    placeholder="userId"
+                    name="itemId"
+                    placeholder="itemId"
                     required
-                    onChange={handleChange("userId")}
+                    onChange={handleChange("itemId")}
                     disabled
                   />
                 </div>
@@ -171,7 +174,7 @@ const Table = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Descrription</label>
+                  <label className="form-label">Description</label>
                   <textarea
                     rows="4"
                     cols="50"
@@ -217,14 +220,14 @@ const Table = () => {
             <div className="modal-body">
               <form>
                 <div className="mb-3">
-                  <label className="form-label">User ID</label>
+                  <label className="form-label">Item ID</label>
                   <input
                     type="text"
                     className="form-control"
-                    name="userId"
-                    value="userId"
+                    name="itemId"
+                    value={itemId}
                     required
-                    
+                    onChange={handleChange("itemId")}
                     disabled
                   />
                 </div>
@@ -234,22 +237,33 @@ const Table = () => {
                     type="text"
                     className="form-control"
                     name="title"
-                    value="title"
+                    value={title}
                     required
-                  
+                    onChange={handleChange("title")}                  
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Body</label>
+                  <label className="form-label">Description</label>
                   <textarea
                     rows="4"
                     cols="50"
                     className="form-control"
-                    name="body"
-                    value="{editFormData.body}"
+                    name="description"
+                    value={description}
                     required
-               
+                    onChange={handleChange("description")}
                   ></textarea>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Price</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="price"
+                    value={price}
+                    required
+                    onChange={handleChange("price")}                  
+                  />
                 </div>
                 <div className="modal-footer d-block">
                   <button

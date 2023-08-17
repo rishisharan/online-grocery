@@ -6,10 +6,10 @@ const ReadTable = ({ item, handleEditPostForm, items }) => {
   return (
     <>
       {items.map((item) => (
-        <tr key={item.id}>
+        <tr key={item.itemId}>
           
         
-          <td>{item.id}</td>
+          <td>{item.itemId}</td>
           <td>{item.title}</td>
           <td>{item.description}</td>
           <td>{item.price}</td>
@@ -19,7 +19,7 @@ const ReadTable = ({ item, handleEditPostForm, items }) => {
               className=" btn btn-primary ml-auto d-block mb-2"
               data-bs-toggle="modal"
               data-bs-target="#editModalForm"
-              // onClick={(e) => handleEditPostForm(e, post)}
+              onClick={(e) => handleEditPostForm(e, item)}
             >
               Edit
             </button> 

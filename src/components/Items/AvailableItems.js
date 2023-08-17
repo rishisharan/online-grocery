@@ -11,7 +11,7 @@ const AvailableItems = () => {
 
   async function fetchItemsHandler() {
     setIsLoading(true);
-    const response = await fetch('https://online-grocery-c68cf-default-rtdb.firebaseio.com/meals.json');    
+    const response = await fetch('http://localhost:8080/api/v1/items');    
     if (!response.ok) {
       throw new Error('Something went wrong');
     }
@@ -21,7 +21,7 @@ const AvailableItems = () => {
     for (const key in data) { 
       loadedItems.push({
         id: key,
-        title: data[key].name,
+        title: data[key].title,
         description: data[key].description,
         price: data[key].price 
       })
