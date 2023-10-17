@@ -7,6 +7,9 @@ import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } 
 import Item from './components/Items/Items';
 import Dashboard from './components/Dashboard/Dashboard';
 import Table from './components/Dashboard/itempage/Table';
+import ErrorPage from './pages/Error';
+import AuthForm from './components/AuthForm';
+import AuthenticationPage, {action as authAction} from './pages/Authentication';
 
 
 
@@ -15,23 +18,31 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout></RootLayout>,
+    errorElement: <ErrorPage/>,
     children: [
-      { path: '/itemPage', element: <Table/> },
       { path: '/', element: <Header /> },
-      { path: '/dashboard', element: <Dashboard /> },
+      { 
+        path: 'dashboard', 
+        element: <Dashboard />, 
+        children : [
+          {
+            path: 'itemPage',
+            index: true,
+            element: <Table/>
+          },
+        ],
+      },
+      {
+        path: 'auth',
+        element: <AuthenticationPage />, 
+        action: authAction
+      },
     ],
   } 
 ]);
 
 function App() {
   return <RouterProvider router={router}/>;
-    // <Fragment>
-    //   <Header>
-        
-    //   </Header>
-    // </Fragment>
-
-  //);
 }
 
 export default App;
