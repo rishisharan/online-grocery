@@ -6,7 +6,10 @@ import RootLayout from './components/Root';
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from 'react-router-dom';
 import Item from './components/Items/Items';
 import Dashboard from './components/Dashboard/Dashboard';
+
 import Table from './components/Dashboard/itempage/Table';
+import Orders from './components/Dashboard/Orders/Orders';
+
 
 
 
@@ -19,6 +22,7 @@ const router = createBrowserRouter([
       { path: '/itemPage', element: <Table/> },
       { path: '/', element: <Header /> },
       { path: '/dashboard', element: <Dashboard /> },
+      { path: '/orders', element: <Orders/> },
     ],
   } 
 ]);

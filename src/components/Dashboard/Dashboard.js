@@ -8,7 +8,7 @@ const Dashboard = () => {
       <Link to="/itemPage" className={classes["tile-content"]}>
         <div className={classes["tile-container"]}>Items</div>
       </Link>
-      <Link to="/itemPage" className={classes["tile-content"]}>
+      <Link to="/orders" className={classes["tile-content"]}>
         <div className={classes["tile-container"]}>Orders</div>
       </Link>
       <Link to="/itemPage" className={classes["tile-content"]}>
