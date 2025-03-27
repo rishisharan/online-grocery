@@ -24,7 +24,9 @@ const Table = () => {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [price, setPrice] = useState();
-  
+  const [showSuccess, setShowSuccess] = useState(false);
+  const closeModelRef = useRef();
+
 
   const handleEditPostForm = (e, item) => {
     e.preventDefault()
@@ -36,6 +38,7 @@ const Table = () => {
 
   const handleAddPost = (e) => {
     e.preventDefault();
+    document.activeElement?.blur();
     const enteredTitle = titleInputRef.current.value;
     const entereDescription = descriptionInputRef.current.value;
     const enteredPrice = priceInputRef.current.value;
@@ -65,21 +68,37 @@ const Table = () => {
   };
 
   const submitOrderHandler = async (itemData) => {
-    await fetch('http://localhost:8080/api/v1/items', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          title: itemData.title,
-          description: itemData.description,
-          quantity: 1,
-          price: itemData.price,
-          isTaxable: true,
-          isAvailable: false,
-      })
-    });
-  //  setIsSubmitting(false);
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/items', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            title: itemData.title,
+            description: itemData.description,
+            quantity: 1,
+            price: itemData.price,
+            isTaxable: true,
+            isAvailable: false,
+        })
+      });
+    //  setIsSubmitting(false);
+      if (response.ok) {
+        // ✅ Blur active element (accessibility fix)
+        document.activeElement?.blur();
+        closeModelRef.current?.click();
+        // ✅ Show success message
+        setShowSuccess(true);
+        console.log("Success");
+        setTimeout(() => setShowSuccess(false), 3000);
+        await fetchItemsHandler();
+      }  else {
+        console.error("POSt failed");
+      }
+    } catch(error) {
+      console.error("Error submitting order: ", error);
+    }
   };
 
   const handleChange = () => {};
@@ -106,33 +125,35 @@ const Table = () => {
 
   return (
     <div>
-      <div className="d-flex flex-row">
+      <div className={classes["table-container"]}>
+      <h4 className="mb-3">📦 Item Inventory</h4>
         <button
           type="button"
           className="me-3 btn btn-primary ml-auto d-block mb-2"
           data-bs-toggle="modal"
           data-bs-target="#addModalForm"
         >
-          Add Data +
+          Add Items
         </button>
       </div>
-      <table className="table table-bordered border-primary table-responsible">
-        <thead>
-          <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Price</th>
-          </tr>
-        </thead>
-        <tbody>
-        
-          <ReadTable
-            items={items}
-            handleEditPostForm={handleEditPostForm} />
-        </tbody>
-      </table>
-
+      <div className={classes["table-wrapper"]}>
+        <table className="table table-striped table-hover align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+            <ReadTable
+              items={items}
+              handleEditPostForm={handleEditPostForm} />
+          </tbody>
+        </table>
+      </div>
       {/*Add Modal form */}
       <div
         className="modal fade"
@@ -145,7 +166,7 @@ const Table = () => {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">Add New Item</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" ref={closeModelRef}></button>
             </div>
             <div className="modal-body">
               <form onSubmit={handleAddPost}>
@@ -199,7 +220,7 @@ const Table = () => {
                   />
                 </div>
                 <div className="modal-footer d-block">
-                  <button type="submit" data-bs-dismiss="modal" className="btn btn-warning float-end">Submit</button>
+                  <button type="submit" className="btn btn-warning float-end">Submit</button>
                 </div>
               </form>
             </div>

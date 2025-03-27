@@ -1,4 +1,5 @@
 import React from 'react'
+import classes from './Table.module.css';
 
 const ReadTable = ({ item, handleEditPostForm, items }) => {
 
@@ -16,7 +17,7 @@ const ReadTable = ({ item, handleEditPostForm, items }) => {
           <td>
             <button
               type="button"
-              className=" btn btn-primary ml-auto d-block mb-2"
+              className={`btn btn-primary ${classes['action-button']}`}
               data-bs-toggle="modal"
               data-bs-target="#editModalForm"
               onClick={(e) => handleEditPostForm(e, item)}
